@@ -12,6 +12,7 @@ RUN useradd --create-home --home-dir "/home/atom" --user-group --groups sudo ato
 RUN mkdir --parents /etc/sudoers.d
 RUN echo "%sudo ALL=NOPASSWD:ALL" > /etc/sudoers.d/sudo-no-passwd
 RUN chmod 0440 /etc/sudoers.d/sudo-no-passwd
+WORKDIR "/home/atom"
 
 # Add Xvfb and have it start at boot
 COPY xvfb_start.sh /usr/local/bin/xvfb_start
