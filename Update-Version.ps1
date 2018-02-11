@@ -63,5 +63,5 @@ $newContent = ($content | NewVersion)
 [System.IO.File]::WriteAllText($dockerfilePath, $newContent)
 Exec { git add "Dockerfile" }
 Exec { git commit --message="Atom $version" }
-Exec { git tag --message="$version" "$version" }
+Exec { git tag --sign --message="$version" "$version" }
 Exec { git push --follow-tags }
