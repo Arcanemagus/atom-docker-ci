@@ -57,11 +57,16 @@ Filter NewVersion
 
 $currentDirectory = (Resolve-Path .\).Path
 $dockerfilePath = Join-Path -Path $currentDirectory -ChildPath "Dockerfile"
+$branch = If (Get-IsBeta) { "beta" } Else { "stable" }
 
+Exec { git checkout master }
 $content = [System.IO.File]::ReadAllText($dockerfilePath)
 $newContent = ($content | NewVersion)
 [System.IO.File]::WriteAllText($dockerfilePath, $newContent)
 Exec { git add "Dockerfile" }
 Exec { git commit --message="Atom $version" }
 Exec { git tag --sign --message="$version" "$version" }
-Exec { git push --follow-tags }
+Exec { git checkout $branch }
+Exec { git merge master }
+Exec { git checkout master }
+Exec { git push --all --follow-tags }
