@@ -39,6 +39,7 @@ RUN apt-get update && \
       xvfb \
       libxss1 \
       libasound2 \
+      libgtk-3-0 \
       \
       sudo \
       curl \
