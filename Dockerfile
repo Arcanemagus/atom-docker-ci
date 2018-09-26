@@ -20,7 +20,7 @@ RUN chmod 0655 /usr/local/bin/xvfb_start
 ENTRYPOINT ["/usr/local/bin/xvfb_start"]
 
 # Set the Atom version and paths to executables
-ENV ATOM_VERSION=v1.31.0 ATOM_SCRIPT_PATH=atom APM_SCRIPT_PATH=apm
+ENV ATOM_VERSION=v1.32.0-beta0 ATOM_SCRIPT_PATH=atom-beta APM_SCRIPT_PATH=apm-beta
 
 # Install dependencies
 RUN apt-get update && \
