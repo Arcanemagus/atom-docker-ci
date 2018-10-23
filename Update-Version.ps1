@@ -69,6 +69,7 @@ Exec { git add "Dockerfile" }
 Exec { git commit --message="Atom $version" }
 Exec { git tag --sign --message="$version" "$version" }
 Exec { git checkout $branch }
+Exec { git pull }
 Exec { git merge master }
 Exec { git checkout master }
 Exec { git push --all --follow-tags }
