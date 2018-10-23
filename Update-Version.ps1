@@ -59,7 +59,9 @@ $currentDirectory = (Resolve-Path .\).Path
 $dockerfilePath = Join-Path -Path $currentDirectory -ChildPath "Dockerfile"
 $branch = If (Get-IsBeta) { "beta" } Else { "stable" }
 
+Exec { git fetch --all --prune }
 Exec { git checkout master }
+Exec { git pull }
 $content = [System.IO.File]::ReadAllText($dockerfilePath)
 $newContent = ($content | NewVersion)
 [System.IO.File]::WriteAllText($dockerfilePath, $newContent)
