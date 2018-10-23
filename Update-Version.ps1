@@ -59,17 +59,26 @@ $currentDirectory = (Resolve-Path .\).Path
 $dockerfilePath = Join-Path -Path $currentDirectory -ChildPath "Dockerfile"
 $branch = If (Get-IsBeta) { "beta" } Else { "stable" }
 
+# Make sure the repo is up to date
 Exec { git fetch --all --prune }
+# Ensure all local branches are up to date
+Exec { git checkout stable }
+Exec { git pull }
+Exec { git checkout beta }
+Exec { git pull }
 Exec { git checkout master }
 Exec { git pull }
+# Update the version in the Dockerfile
 $content = [System.IO.File]::ReadAllText($dockerfilePath)
 $newContent = ($content | NewVersion)
 [System.IO.File]::WriteAllText($dockerfilePath, $newContent)
 Exec { git add "Dockerfile" }
 Exec { git commit --message="Atom $version" }
 Exec { git tag --sign --message="$version" "$version" }
+# Bring the proper release channel branch up to date
 Exec { git checkout $branch }
-Exec { git pull }
 Exec { git merge master }
+# Checkout master again to be safe
 Exec { git checkout master }
+# Push all the branches back up
 Exec { git push --all --follow-tags }
